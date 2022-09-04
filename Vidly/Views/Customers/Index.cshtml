@@ -10,10 +10,11 @@
 @if (!Model.Any())
 {
     <p>We Don't have any currenct Customers</p>
+    <p>We Don't have any currenct Customers</p>
 }
 else
 {
-    <table class="table-bordered table-hover" >
+    <table class="table-bordered table-hover">
         <thead>
             <tr>
                 <th width="150" style="font-size:larger">
@@ -21,21 +22,21 @@ else
                 </th>
                 <th width="150" style="font-size:larger">
                     Membership Type
-                </th>  
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var customer in Model)
             {
-            <tr>
-             <td>
-                    @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.id }, null)
-            </td> 
-            <td>
-                @customer.MembershipType.Name
+                <tr>
+                    <td>
+                        @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.id }, null)
+                    </td>
+                    <td>
+                        @customer.MembershipType.Name
 
-            </td>
-            </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
