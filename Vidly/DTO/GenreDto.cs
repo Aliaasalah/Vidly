@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Vidly.Models
+namespace Vidly.DTO
 {
-    public class Genre
+    public class GenreDto
     {
         public byte ID { get; set; }
         public string Name { get; set; }
