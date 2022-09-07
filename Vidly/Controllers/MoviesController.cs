@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace Vidly.Controllers
 {
@@ -51,6 +52,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
+
             var movie = _contex.Movies.Include(x => x.Genre).SingleOrDefault(c => c.ID == id);
             if (movie == null)
                 return HttpNotFound();
@@ -65,34 +67,81 @@ namespace Vidly.Controllers
 
         public ActionResult New()
         {
+           
             var genres = _contex.genres.ToList(); ;
             var viewModel = new MovieFormView()
             {
-                Movie = new Movie(),
+                
                 genres = genres
             };
 
             return View("MovieForm", viewModel);
         }
 
-        public ActionResult Edit(int id)
-        { 
-            return Content("id = "+ id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(Movie movie)
+        {
+            // movie.Genre
+            if (movie.ID == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                _contex.Movies.Add(movie);
+            }
+            else
+            {
+                var movie1 = _contex.Movies.Single(m => m.ID == movie.ID);
+                movie1.Name = movie.Name;
+                movie1.quantity = movie.quantity;
+                movie1.ReleaseDate = movie.ReleaseDate;
+                movie1.GenreId = movie.GenreId;
+
+
+            }
+
+            try
+            {
+                _contex.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+
+                Console.WriteLine(e);
+            } 
+            
+            return RedirectToAction("Index", "Movies");
         }
 
-     /*   public ActionResult Index(int? PageIndex , string sortBy)
+        // public ActionResult Edit(int id)
+        // { 
+        //     return Content("id = "+ id);
+        // }
+        public ActionResult Edit(int id)
         {
-            if (!PageIndex.HasValue)
+            var movie = _contex.Movies.SingleOrDefault(c => c.ID == id);
+            if (movie == null)
+                return HttpNotFound();
+            var viewModel = new MovieFormView(movie)
             {
-                PageIndex = 1;
-            }
-            if (String.IsNullOrWhiteSpace(sortBy))
-            {
-                sortBy = "Name";
-            }
+                genres = _contex.genres.ToList()
+            };
 
-            return Content(String.Format("pageIndex={0}&sortBy={1}",PageIndex,sortBy));
+            return View("MovieForm", viewModel);
+        }
 
-        }*/
+        /*   public ActionResult Index(int? PageIndex , string sortBy)
+           {
+               if (!PageIndex.HasValue)
+               {
+                   PageIndex = 1;
+               }
+               if (String.IsNullOrWhiteSpace(sortBy))
+               {
+                   sortBy = "Name";
+               }
+
+               return Content(String.Format("pageIndex={0}&sortBy={1}",PageIndex,sortBy));
+
+           }*/
     }
 }
