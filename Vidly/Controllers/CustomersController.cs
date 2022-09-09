@@ -52,11 +52,11 @@ namespace Vidly.Controllers
             }
         
 
-            if (customer.id == 0)
+            if (customer.Id == 0)
                 _contex.Customers.Add(customer);
             else
             {
-                var Cust = _contex.Customers.Single(c => c.id==customer.id);
+                var Cust = _contex.Customers.Single(c => c.Id==customer.Id);
                 Cust.Name = customer.Name;
                 Cust.Birthday = customer.Birthday;
                 Cust.MembershiptypeId = customer.MembershiptypeId;
@@ -70,15 +70,15 @@ namespace Vidly.Controllers
 
         public ActionResult Index()
         {
-            _contex.Customers.Include(x => x.MembershipType).ToList();
+            // _contex.Customers.Include(x => x.MembershipType).ToList();
 
-            var customers = _contex.Customers.Include(c => c.MembershipType).ToList();
-            return View(customers);
+            //var customers = _contex.Customers.Include(c => c.MembershipType).ToList();
+            return View();
         }
 
         public ActionResult Edit(int id)
         {
-            var customer = _contex.Customers.SingleOrDefault(c => c.id==id);
+            var customer = _contex.Customers.SingleOrDefault(c => c.Id==id);
             if (customer == null)
                 return HttpNotFound();
             var viewModel = new CustomerFormViewModel()
@@ -90,7 +90,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            var customer = _contex.Customers.Include(c => c.MembershipType).SingleOrDefault(c=> c.id==id);
+            var customer = _contex.Customers.Include(c => c.MembershipType).SingleOrDefault(c=> c.Id==id);
             if (customer == null)
                 return HttpNotFound();
             return View(customer);

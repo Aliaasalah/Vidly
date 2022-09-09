@@ -18,9 +18,10 @@ namespace Vidly.Controllers.Api
             _contex = new ApplicationDbContext();
         }
        
-        public IHttpActionResult GetCustomer()
+        public IHttpActionResult GetCustomers()
         {
             //  return _contex.Customers.ToList().Select(Mapper.Map<Customer,CustomerDTO>);
+            //var r = _contex.Customers.ToList();
             var q = _contex.Customers.Include(x => x.MembershipType);
 
             var customerDtos = q.ToList().Select(Mapper.Map<Customer, CustomerDTO>);
@@ -31,7 +32,7 @@ namespace Vidly.Controllers.Api
 
         public IHttpActionResult GetCustomer(int id)
         {
-            var Customer = _contex.Customers.SingleOrDefault(c => c.id == id);
+            var Customer = _contex.Customers.SingleOrDefault(c => c.Id == id);
             if (Customer == null)
                 return NotFound();
 
@@ -50,8 +51,8 @@ namespace Vidly.Controllers.Api
             _contex.Customers.Add(customer);
             _contex.SaveChanges();
 
-            customerDTO.id = customer.id;
-            return Created(new Uri(Request.RequestUri+"/"+ customer.id),customerDTO);
+            customerDTO.Id = customer.Id;
+            return Created(new Uri(Request.RequestUri+"/"+ customer.Id),customerDTO);
         }
 
         [HttpPut]
@@ -62,7 +63,7 @@ namespace Vidly.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            var customerInDB = _contex.Customers.SingleOrDefault(c => c.id == id);
+            var customerInDB = _contex.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDB == null)
             {
@@ -85,7 +86,7 @@ namespace Vidly.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            var customerInDB = _contex.Customers.SingleOrDefault(c => c.id == id);
+            var customerInDB = _contex.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDB == null)
             {

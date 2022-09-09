@@ -9,7 +9,7 @@ namespace Vidly.Models
 {
     public class Customer
     {
-        public int id { get; set; }
+        public int Id { get; set; }
        
 
         [Required(ErrorMessage ="Please enter Customer's name.")]

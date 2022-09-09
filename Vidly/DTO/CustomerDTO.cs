@@ -9,8 +9,7 @@ namespace Vidly.DTO
 {
     public class CustomerDTO
     {
-        public int id { get; set; }
-
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Please enter Customer's name.")]
         [StringLength(225)]

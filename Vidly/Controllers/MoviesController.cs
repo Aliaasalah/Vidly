@@ -25,10 +25,10 @@ namespace Vidly.Controllers
         {
             _contex.Dispose();
         }
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var movies = _contex.Movies.Include( c=> c.Genre).ToList();
-            return View(movies);
+            //var movies = _contex.Movies.Include( c=> c.Genre).ToList();
+            return View();
         }
         public ActionResult Random()
         {

@@ -20,7 +20,7 @@ namespace Vidly.Controllers.Api
             _contex = new ApplicationDbContext();
         }
 
-        public IHttpActionResult GetMovie()
+        public IHttpActionResult GetMovies()
         {
             var q = _contex.Movies.Include(x => x.Genre);
 
